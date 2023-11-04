@@ -3,7 +3,6 @@ from pydantic import BaseModel, Field, constr, field_validator
 from collections import defaultdict
 import json
 import tqdm
-import time
 
 class Token(BaseModel):
     '''
