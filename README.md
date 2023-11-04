@@ -3,7 +3,9 @@
 
 # OUP Language Engineer Test
 
-![CI testing](https://github.com/knoriy/OUP_LanguageEngineerTest/workflows/ci-testing/badge.svg?branch=master&event=push)
+![CI testing](https://github.com/knoriy/OUP_LanguageEngineerTest/actions/workflows/CI%20testing/badge.svg?branch=main)
+
+
 </div>
 
 This project is a set of tools for parsing and analysing linguistic data from a corpus. Pydantic models are used to ensure ensures strong type checking and validation, essential for maintaining data integrity in natural language processing tasks.
@@ -83,7 +85,7 @@ Deploying this code would require additional changes to allows for ease of acces
 
 ### Serverless - AWS Lambda
 
-A simple and faster solution is utalsing AWS Lambda service,
+A simple and faster solution is utalsing AWS Lambda service using the container approach below. or
 
 ### Docker
 
