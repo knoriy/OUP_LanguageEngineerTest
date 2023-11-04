@@ -1,18 +1,18 @@
 
 <div align="center">
 
-# OUP Language Engineer Test
+# 🛠️📚 OUP Language Engineer Test 📚🛠️
 
 [![OUP LE Test](https://github.com/knoriy/OUP_LanguageEngineerTest/actions/workflows/ci-testing.yml/badge.svg)](https://github.com/knoriy/OUP_LanguageEngineerTest/actions/workflows/ci-testing.yml)
 
 
 </div>
 
-This project is a set of tools for parsing and analysing linguistic data from a corpus. Pydantic models are used to ensure ensures strong type checking and validation, essential for maintaining data integrity in natural language processing tasks.
+This project is a set of tools for parsing and analysing linguistic data from a corpus. Pydantic models are used to ensure strong type checking and validation, essential for maintaining data integrity in natural language processing tasks.
 
-## Setup
+## 🚀 Setup
 
-To set up the project environment:
+To set up the project environment, clone this repository and navigate into it:
 
 ```bash
 git clone https://github.com/knoriy/OUP_LanguageEngineerTest.git
@@ -25,7 +25,7 @@ Ensure that you have Python 3.7+ installed on your system. Then, install the req
 pip install -r requirements.txt
 ```
 
-## Usage
+## 🧑‍💻 Usage
 
 The project can be run from the command line. Please ensure your corpus data is in a JSON format as specified in the sample input schema.
 
@@ -35,7 +35,7 @@ python src/oup_le_task.py /path/to/corpus.json
 
 This will parse the file `corpus.json` and output the lemma analysis to a JSON file (`output.json`).
 
-## Tests
+## 🧪 Tests
 
 Ensure that everything is functiong as expected:
 
@@ -43,7 +43,7 @@ Ensure that everything is functiong as expected:
 pytest src/
 ```
 
-## Input Data Format
+## 📄 Input Data Format
 
 The expected input is a JSON file containing parsed sentences with tokens. Each token should have the following attributes:
 
@@ -75,7 +75,7 @@ Example:
 }
 ```
 
-## Deployment
+## 🌐 Deployment
 
 This tool could be deployed on a server provided by cloud providor such as AWS or inhouse servers. In this instance we will discuss two approahced, containersised microservices and AWS's Lambda service.
 
@@ -102,14 +102,14 @@ def lambda_handler(event, context):
         }
 ```
 
-#### Benefits of AWS Lambda
+#### 🌟 Benefits of AWS Lambda
 
 - **Scalability**: AWS Lambda automatically scales your application by running code in response to each trigger, it can handle a few requests per day to thousands per second.
 - **Cost-Effective**: You pay only for the compute time you consume, which makes it cost-effective for applications with variable usage.
 - **Event-Driven**: It integrates with AWS services to run code in response to events, such as file uploads to S3 or HTTP requests via API Gateway.
 - **Serverless**: No servers to manage as AWS handles the infrastructure, which means less operational overhead.
 
-### Docker
+### 🐳 Docker
 
 The application can also be containerised using Docker, which simplifies deployment and improved reproduceability:
 
@@ -133,7 +133,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 CMD ["oup_lambda_handler.lambda_handler"]
 ```
 
-#### Benefits of Using Docker with AWS Lambda
+#### 🌟 Benefits of Using Docker with AWS Lambda
 
 - **Consistent Environment**: Your Lambda function runs in the same environment locally and in the cloud, reducing the "it works on my machine" problem.
 - **Complex Dependencies**: If your application requires complex dependencies or specific versions of system libraries, a Docker container can encapsulate all of these.
