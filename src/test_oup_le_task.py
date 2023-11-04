@@ -59,6 +59,7 @@ def test_load_corpus_data():
     '''
     if not os.path.exists('path_to_test_corpus.json'):
         pytest.skip("Test corpus file not found")
+        
     corpus_data = load_corpus_data('sample_parsed_sentences.json')
 
     assert 'sentences' in corpus_data
