@@ -1,4 +1,4 @@
-name: Python application test
+name: OUP LE Test
 
 on:
   push:
