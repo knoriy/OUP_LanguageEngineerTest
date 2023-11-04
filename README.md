@@ -3,7 +3,7 @@
 
 # OUP Language Engineer Test
 
-![CI testing](https://github.com/knoriy/OUP_LanguageEngineerTest/actions/workflows/CI%20testing/badge.svg?branch=main)
+![CI testing](https://github.com/knoriy/OUP_LanguageEngineerTest/workflows/OUP%20LE%20Test/badge.svg?branch=master&event=push)
 
 
 </div>
