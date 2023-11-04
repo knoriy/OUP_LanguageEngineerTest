@@ -2,9 +2,11 @@ from typing import Dict, Optional
 from pydantic import BaseModel, Field, constr, field_validator
 from collections import defaultdict
 import json
+import tqdm
+import time
 
 class Token(BaseModel):
-    """
+    '''
     A model representing a token with attributes for text, lemma, part of speech, and features.
     
     Attributes:
@@ -12,7 +14,7 @@ class Token(BaseModel):
         lemma (constr): The base or dictionary form of the word, with leading and trailing whitespace stripped.
         pos (str): The part of speech tag, validated against a set of valid universal POS tags.
         feats (Optional[str]): An optional string of morphological features.
-    """
+    '''
     text: str
     lemma: constr(strip_whitespace=True) 
     pos: str
@@ -103,7 +105,7 @@ def get_lemmas(corpus_data: Dict):
         Dict[str, Lemma]: A dictionary mapping lemmas to their respective Lemma model instances.
     """
     lemmas_dict: Dict[str, Lemma] = defaultdict(lambda: None)
-    for sentence in corpus_data["sentences"]:
+    for sentence in tqdm.tqdm(corpus_data["sentences"], desc="Processing sentences"):
         for token_data in sentence['tokens']:
             token = Token(**token_data)
             if lemmas_dict[token.lemma]:
@@ -116,18 +118,24 @@ def get_lemmas(corpus_data: Dict):
     return lemmas_dict
 
 
-def main():
-    corpus_data = load_corpus_data('sample_parsed_sentences.json')
+def main(args):
+    corpus_data = load_corpus_data(args.corpus_path)
     lemmas_dict = get_lemmas(corpus_data)
 
     output_data = [lemma.model_dump() for lemma in lemmas_dict.values()]
 
-    # # dump to file
-    # with open('sample_lemmas.json', 'w', encoding='utf-8') as f:
-    #     json.dump(output_data, f, ensure_ascii=False, indent=2)
+    # dump to file
+    with open(args.output_path, 'w', encoding='utf-8') as f:
+        json.dump(output_data, f, ensure_ascii=False, indent=2)
 
-    json_output = json.dumps(output_data, ensure_ascii=False, indent=2)
-    print(json_output)
+    # json_output = json.dumps(output_data, ensure_ascii=False, indent=2)
+    # print(json_output)
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description='Process a corpus to extract lemmas.')
+    parser.add_argument('corpus_path', type=str, help='The file path to the corpus JSON file.')
+    parser.add_argument('-o', '--output_path', type=str, default='output.json', help='The file path to the output JSON file.')
+    args = parser.parse_args()
+    
+    main(args)
