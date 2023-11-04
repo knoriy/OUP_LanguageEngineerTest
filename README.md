@@ -1,4 +1,10 @@
+
+<div align="center">
+
 # OUP Language Engineer Test
+
+![CI testing](https://github.com/knoriy/OUP_LanguageEngineerTest/workflows/ci-testing/badge.svg?branch=master&event=push)
+</div>
 
 This project is a set of tools for parsing and analysing linguistic data from a corpus. Pydantic models are used to ensure ensures strong type checking and validation, essential for maintaining data integrity in natural language processing tasks.
 
@@ -10,6 +16,7 @@ To set up the project environment:
 git clone https://github.com/knoriy/OUP_LanguageEngineerTest.git
 cd OUP_LanguageEngineerTest
 ```
+
 Ensure that you have Python 3.7+ installed on your system. Then, install the required dependencies:
 
 ```bash
@@ -21,10 +28,18 @@ pip install -r requirements.txt
 The project can be run from the command line. Please ensure your corpus data is in a JSON format as specified in the sample input schema.
 
 ```bash
-python oup_le_task.py /path/to/corpus.json
+python src/oup_le_task.py /path/to/corpus.json
 ```
 
 This will parse the file `corpus.json` and output the lemma analysis to a JSON file (`output.json`).
+
+## Tests
+
+Ensure that everything is functiong as expected:
+
+```bash
+pytest src/
+```
 
 ## Input Data Format
 
@@ -41,15 +56,15 @@ Example:
 {
   "sentences": [
       {
-      "sentence_text": "Example text",
+      "sentence_text": "2019 жылы 27 желтоқсанда Президент",
       "tokens": [
         {
-          "id": 1,
-          "text": "Example",
-          "lemma": "example",
-          "pos": "NOUN",
-          "feats": "Number=Sing"
-        }
+          "id": "1",
+          "text": "2019",
+          "lemma": "2019",
+          "pos": "NUM",
+          "feats": "NumType=Ord",
+        },
         // ... more tokens
       ]
     }
@@ -60,48 +75,60 @@ Example:
 
 ## Deployment
 
-This tool could be deployed on a server provided by cloud providor such as AWS or inhouse servers. In this instance we will discuss two approahced, containersised microservices and AWS Lambda service.
+This tool could be deployed on a server provided by cloud providor such as AWS or inhouse servers. In this instance we will discuss two approahced, containersised microservices and AWS's Lambda service.
 
+Deploying this code would require additional changes to allows for ease of access utlaising tools such as Flask or FastAPI. I discuss some of these changes in the appropriate section below.
 
-## Storage
+### Storage
 
-## Docker
+### Serverless - AWS Lambda
+
+A simple and faster solution is utalsing AWS Lambda service,
+
+### Docker
 
 The application can be containerised using Docker, which simplifies deployment and scaling. Here is a basic guide on how to do this:
 
-1. Dockerise the application:
+1. Create a webserver wrapper
+    1.1 Modify your application to be served over a web server. I would recoment using FastAPI as it is fully compatable with Pydantic.
+    1.2 Implement an API endpoint that will receive the corpus data through HTTP requests and return the analysis results.
+
+2. Dockerise the application:
 
     ```dockerfile
     # ./Dockerfile
-    # Use an official Python runtime as a parent image
+    # Using official python image as base for our image
     FROM python:3.7-slim
-
     # Set the working directory in the container
     WORKDIR /app
-
-    # Copy the current directory contents into the container at /usr/src/app
-    COPY . .
-
+    # Copy the current directory contents into the container at /app
+    COPY . /app
     # Install any needed packages specified in requirements.txt
     RUN pip install --no-cache-dir -r requirements.txt
-
-    # Run service when the container launches
-    CMD ["python", "./oup_le_task.py"]
+    # Command to run the application using Uvicorn
+    CMD ["uvicorn", "oup_le_task:app", "--host", "0.0.0.0", "--port", "80"]
     ```
 
-2. Build Docker image
+3. Build Docker image
 
     ````bash
     docker build -t oup-le-test .
     ````
 
-3. Run container
+4. Run container
 
     ```bash
-    docker run -it --rm --name running-corpus-analyzer corpus-data-analyzer
+    docker run -p 80:80 oup-le-test
     ```
 
-## AWS Lambda
+    Both inhouse and cloud providers can be used to deploy this container.
 
+### Continuous Integration/Continuous Deployment (CI/CD)
 
-## Access
+For automated deployment, one could set up a CI/CD pipeline using tools like GitHub Actions. The pipeline should:
+
+- Build the Docker image.
+- Run tests.
+- Deploy the Docker image to the production environment.
+
+Any push to the main branch of the repository will trigger this pipeline, ensuring that the latest version of the program is automatically deployed.
