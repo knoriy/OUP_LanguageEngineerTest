@@ -8,7 +8,7 @@
 
 </div>
 
-This project is a set of tools for parsing and analysing linguistic data from a corpus. Pydantic models are used to ensure strong type checking and validation, essential for maintaining data integrity in natural language processing tasks.
+This project is a set of tools for parsing and analysing linguistic data from a corpus. Pydantic models ensure strong type checking and validation, which is essential for maintaining data integrity in natural language processing tasks.
 
 ## 🚀 Setup
 
@@ -37,7 +37,7 @@ This will parse the file `corpus.json` and output the lemma analysis to a JSON f
 
 ## 🧪 Tests
 
-Ensure that everything is functiong as expected:
+Ensure that everything is functioning as expected:
 
 ```bash
 pytest src/
@@ -77,13 +77,13 @@ Example:
 
 ## 🌐 Deployment
 
-This tool could be deployed on a server provided by cloud providor such as AWS or inhouse servers. In this instance we will discuss two approahced, containersised microservices and AWS's Lambda service.
+This tool could be deployed on a server provided by a cloud provider such as AWS or in-house servers. In this instance, we will discuss two approaches: containerised microservices and AWS's Lambda service.
 
-Deploying this code would require additional changes to allows for ease of access utlaising tools such as Flask or FastAPI. I discuss some of these changes in the appropriate section below.
+Deploying this code would require additional changes to allow for ease of access utilising tools such as Flask or FastAPI. I discuss some of these changes in the appropriate section below.
 
 ### Serverless - AWS Lambda
 
-In this instance we will utalise AWS lamda an effishent and scaleable solution within the AWS eco system. We use both Docker containters or package our code for execution, to do so we must configure our Lambda function, and set up any triggers such as Amazon S3 events or HTTP endpoints through Amazon API Gateway.
+In this instance, we will utilise AWS lambda, an efficient and scaleable solution within the AWS ecosystem. We use both Docker containers or package our code for execution. To do so, we must configure our Lambda function and set up any triggers, such as Amazon S3 events or HTTP endpoints, through Amazon API Gateway.
 
 ```python
 # oup_lambda_handler.py
@@ -104,27 +104,27 @@ def lambda_handler(event, context):
 
 #### 🌟 Benefits of AWS Lambda
 
-- **Scalability**: AWS Lambda automatically scales your application by running code in response to each trigger, it can handle a few requests per day to thousands per second.
+- **Scalability**: AWS Lambda automatically scales your application by running code in response to each trigger; it can handle a few daily requests to thousands per second.
 - **Cost-Effective**: You pay only for the compute time you consume, which makes it cost-effective for applications with variable usage.
 - **Event-Driven**: It integrates with AWS services to run code in response to events, such as file uploads to S3 or HTTP requests via API Gateway.
 - **Serverless**: No servers to manage as AWS handles the infrastructure, which means less operational overhead.
 
 ### 🐳 Docker
 
-The application can also be containerised using Docker, which simplifies deployment and improved reproduceability:
+The application can also be containerised using Docker, which simplifies deployment and improves reproducibility:
 
-Note: If we are using an inhouse server, we must create a webserver wrapper.
-    1. Modify your application to be served over a web server. I would recoment using FastAPI as it is fully compatable with Pydantic.
-    2. Implement an API endpoint that will receive the corpus data through HTTP requests and return the analised results.
+Note: If we use an in-house server, we must create a webserver wrapper.
+    1. Modify your application to be served over a web server. I would recommend using FastAPI as it is fully compatible with Pydantic.
+    2. Implement an API endpoint to receive the corpus data through HTTP requests and return the analysed results.
 
 Dockerise the application:
 
 ```dockerfile
 # ./Dockerfile
-# Using official python image as base for our image
+# Using official python image as the base for our image
 FROM python:3.7-slim
 WORKDIR /app
-# Copy screipts into the container at /app
+# Copy scripts into the container at /app
 COPY src/ /app
 # Copy and install any needed packages specified in requirements.txt
 COPY requirements.txt /app
@@ -137,7 +137,7 @@ CMD ["oup_lambda_handler.lambda_handler"]
 
 - **Consistent Environment**: Your Lambda function runs in the same environment locally and in the cloud, reducing the "it works on my machine" problem.
 - **Complex Dependencies**: If your application requires complex dependencies or specific versions of system libraries, a Docker container can encapsulate all of these.
-- **Custom Runtimes**: Docker allows you to use runtimes that are not natively supported by AWS Lambda through custom images.
+- **Custom Runtimes**: Docker allows you to use runtimes not natively supported by AWS Lambda through custom images.
 
 ### Continuous Integration/Continuous Deployment (CI/CD)
 
