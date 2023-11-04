@@ -81,49 +81,63 @@ This tool could be deployed on a server provided by cloud providor such as AWS o
 
 Deploying this code would require additional changes to allows for ease of access utlaising tools such as Flask or FastAPI. I discuss some of these changes in the appropriate section below.
 
-### Storage
-
 ### Serverless - AWS Lambda
 
-A simple and faster solution is utalsing AWS Lambda service using the container approach below. or
+In this instance we will utalise AWS lamda an effishent and scaleable solution within the AWS eco system. We use both Docker containters or package our code for execution, to do so we must configure our Lambda function, and set up any triggers such as Amazon S3 events or HTTP endpoints through Amazon API Gateway.
+
+```python
+# oup_lambda_handler.py
+def lambda_handler(event, context):
+    try:
+        corpus_data = event.get('corpus_data')
+        lemmas_dict = get_lemmas(corpus_data)
+        return {
+            'statusCode': 200,
+            'body': json.dumps(lemmas_dict, ensure_ascii=False, indent=2)
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+```
+
+#### Benefits of AWS Lambda
+
+- **Scalability**: AWS Lambda automatically scales your application by running code in response to each trigger, it can handle a few requests per day to thousands per second.
+- **Cost-Effective**: You pay only for the compute time you consume, which makes it cost-effective for applications with variable usage.
+- **Event-Driven**: It integrates with AWS services to run code in response to events, such as file uploads to S3 or HTTP requests via API Gateway.
+- **Serverless**: No servers to manage as AWS handles the infrastructure, which means less operational overhead.
 
 ### Docker
 
-The application can be containerised using Docker, which simplifies deployment and scaling. Here is a basic guide on how to do this:
+The application can also be containerised using Docker, which simplifies deployment and improved reproduceability:
 
-1. Create a webserver wrapper
-    1.1 Modify your application to be served over a web server. I would recoment using FastAPI as it is fully compatable with Pydantic.
-    1.2 Implement an API endpoint that will receive the corpus data through HTTP requests and return the analysis results.
+Note: If we are using an inhouse server, we must create a webserver wrapper.
+    1. Modify your application to be served over a web server. I would recoment using FastAPI as it is fully compatable with Pydantic.
+    2. Implement an API endpoint that will receive the corpus data through HTTP requests and return the analised results.
 
-2. Dockerise the application:
+Dockerise the application:
 
-    ```dockerfile
-    # ./Dockerfile
-    # Using official python image as base for our image
-    FROM python:3.7-slim
-    # Set the working directory in the container
-    WORKDIR /app
-    # Copy the current directory contents into the container at /app
-    COPY . /app
-    # Install any needed packages specified in requirements.txt
-    RUN pip install --no-cache-dir -r requirements.txt
-    # Command to run the application using Uvicorn
-    CMD ["uvicorn", "oup_le_task:app", "--host", "0.0.0.0", "--port", "80"]
-    ```
+```dockerfile
+# ./Dockerfile
+# Using official python image as base for our image
+FROM python:3.7-slim
+WORKDIR /app
+# Copy screipts into the container at /app
+COPY src/ /app
+# Copy and install any needed packages specified in requirements.txt
+COPY requirements.txt /app
+RUN pip install --no-cache-dir -r requirements.txt
 
-3. Build Docker image
+CMD ["oup_lambda_handler.lambda_handler"]
+```
 
-    ````bash
-    docker build -t oup-le-test .
-    ````
+#### Benefits of Using Docker with AWS Lambda
 
-4. Run container
-
-    ```bash
-    docker run -p 80:80 oup-le-test
-    ```
-
-    Both inhouse and cloud providers can be used to deploy this container.
+- **Consistent Environment**: Your Lambda function runs in the same environment locally and in the cloud, reducing the "it works on my machine" problem.
+- **Complex Dependencies**: If your application requires complex dependencies or specific versions of system libraries, a Docker container can encapsulate all of these.
+- **Custom Runtimes**: Docker allows you to use runtimes that are not natively supported by AWS Lambda through custom images.
 
 ### Continuous Integration/Continuous Deployment (CI/CD)
 
