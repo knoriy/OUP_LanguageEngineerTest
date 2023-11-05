@@ -83,7 +83,7 @@ Deployment on in-house servers would require additional changes to allow for use
 
 <!-- Insert image -->
 <p align="center">
-  <img src="./images/OUP_pipeline.drawio.png" alt="Pipeline">
+  <img src="./images/OUP_pipeline.drawio.svg" alt="Pipeline">
 </p>
 
 ### Serverless - AWS Lambda
@@ -119,7 +119,7 @@ def lambda_handler(event, context):
 The application can also be containerised using Docker, which simplifies deployment and improves reproducibility:
 
 Note: If we use an in-house server, we must create a webserver wrapper.
-    1. Modify your application to be served over a web server. I would recommend using FastAPI as it is fully compatible with Pydantic.
+    1. Modify the application to be served over a web server. I would recommend using FastAPI as it is fully compatible with Pydantic.
     2. Implement an API endpoint to receive the corpus data through HTTP requests and return the analysed results.
 
 Dockerise the application:
@@ -141,7 +141,7 @@ CMD ["oup_lambda_handler.lambda_handler"]
 #### 🌟 Benefits of Using Docker with AWS Lambda
 
 - **Consistent Environment**: Your Lambda function runs in the same environment locally and in the cloud, reducing the "it works on my machine" problem.
-- **Complex Dependencies**: If your application requires complex dependencies or specific versions of system libraries, a Docker container can encapsulate all of these.
+- **Complex Dependencies**: If the application requires complex dependencies or specific versions of system libraries, a Docker container can encapsulate all of these.
 - **Custom Runtimes**: Docker allows you to use runtimes not natively supported by AWS Lambda through custom images.
 
 ### Continuous Integration/Continuous Deployment (CI/CD)
