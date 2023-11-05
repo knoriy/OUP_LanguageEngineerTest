@@ -79,7 +79,12 @@ Example:
 
 This tool could be deployed on a server provided by a cloud provider such as AWS or in-house servers. In this instance, we will discuss two approaches: containerised microservices and AWS's Lambda service.
 
-Deploying this code would require additional changes to allow for ease of access utilising tools such as Flask or FastAPI. I discuss some of these changes in the appropriate section below.
+Deployment on in-house servers would require additional changes to allow for user access, tools such as such as Flask or FastAPI could be used.
+
+<!-- Insert image -->
+<p align="center">
+  <img src="./images/OUP_pipeline.drawio.png" alt="Pipeline">
+</p>
 
 ### Serverless - AWS Lambda
 
