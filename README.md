@@ -83,7 +83,7 @@ Deployment on in-house servers would require additional changes to allow for use
 
 <!-- Insert image -->
 <p align="center">
-  <img src="./images/OUP_pipeline.drawio.png" alt="Pipeline">
+  <img src="./images/OUP_pipeline.drawio.svg" alt="Pipeline">
 </p>
 
 ### Serverless - AWS Lambda
